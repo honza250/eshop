@@ -1,16 +1,17 @@
 import express from 'express';
 import path from 'path';
-import productsRouter from './routes/products';
 
 const app = express();
 app.use(express.json());
 
-// Statická úvodní stránka z /views
+// Úvodní stránka
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../views/index.html'));
 });
 
-// Produkty
-app.use('/products', productsRouter);
+// Statická stránka s produkty
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, '../views/products.html'));
+});
 
 export default app;
