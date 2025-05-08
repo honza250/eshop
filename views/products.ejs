@@ -11,16 +11,13 @@
 </head>
 <body>
   <h1>Naše produkty</h1>
-  <div class="product">
-    <h2>Vrtačka Bosch</h2>
-    <p>Kvalitní vrtačka pro domácí použití.</p>
-    <strong>1 200 Kč</strong>
-  </div>
-  <div class="product">
-    <h2>Kladivo Stanley</h2>
-    <p>Odolné kladivo pro každodenní práci.</p>
-    <strong>350 Kč</strong>
-  </div>
+  <% products.forEach(p => { %>
+    <div class="product">
+      <h2><%= p.name %></h2>
+      <p><%= p.description || '' %></p>
+      <strong><%= p.price %> Kč</strong>
+    </div>
+  <% }); %>
   <p><a href="/">Zpět na úvod</a></p>
 </body>
 </html>
