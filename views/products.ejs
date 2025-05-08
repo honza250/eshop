@@ -3,64 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Produkty</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 2rem;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0fdf4; /* světle zelené */
-      color: #1b4332;
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: #2d6a4f;
-      margin-bottom: 2rem;
-    }
-
-    .product {
-      border: 1px solid #95d5b2;
-      background: #d8f3dc;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .product h2 {
-      margin: 0 0 0.5rem;
-    }
-
-    .product p {
-      margin: 0 0 0.5rem;
-    }
-
-    .product strong {
-      font-size: 1.1rem;
-      color: #40916c;
-    }
-
-    a {
-      display: inline-block;
-      margin-top: 2rem;
-      color: #2d6a4f;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <h1>Naše produkty</h1>
-  <% products.forEach(p => { %>
-    <div class="product">
-      <h2><%= p.name %></h2>
-      <p><%= p.description || '' %></p>
-      <strong><%= p.price %> Kč</strong>
-    </div>
-  <% }); %>
-  <a href="/">Zpět na úvod</a>
+  <div class="container">
+    <header>
+      <h1>Naše produkty</h1>
+    </header>
+    <% products.forEach(p => { %>
+      <div class="product">
+        <h2><%= p.name %></h2>
+        <p><%= p.description || '' %></p>
+        <strong><%= p.price %> Kč</strong>
+      </div>
+    <% }); %>
+    <a href="/">Zpět na úvod</a>
+  </div>
 </body>
 </html>
