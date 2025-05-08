@@ -2,12 +2,29 @@ import express from 'express';
 import path from 'path';
 import { db } from './db';
 import { products } from './db/schema';
-import { eq } from 'drizzle-orm';
 
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Dočasné úložiště v paměti
+const cart: { productId: number; quantity: number }[] = [];
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/cart', (req, res) => {
+  const { productId } = req.body;
+
+  const existing = cart.find(item => item.productId === Number(productId));
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ productId: Number(productId), quantity: 1 });
+  }
+
+  // Přesměruj zpět na /products
+  res.redirect('/products');
+});
 
 // Nastavíme EJS jako šablonovací engine
 app.set('views', path.join(__dirname, '../views'));

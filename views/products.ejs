@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <title>Produkty</title>
   <link rel="stylesheet" href="/styles.css" />
+  <a href="/cart">Zobrazit košík</a>
+
 </head>
 <body>
   <div class="container">
@@ -15,8 +17,13 @@
         <h2><%= p.name %></h2>
         <p><%= p.description || '' %></p>
         <strong><%= p.price %> Kč</strong>
+        <form action="/cart" method="POST" style="margin-top: 1rem;">
+          <input type="hidden" name="productId" value="<%= p.id %>" />
+          <button type="submit">Přidat do košíku</button>
+        </form>
       </div>
     <% }); %>
+    
     <a href="/">Zpět na úvod</a>
   </div>
 </body>
