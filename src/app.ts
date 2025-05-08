@@ -1,16 +1,16 @@
 import express from 'express';
+import path from 'path';
 import productsRouter from './routes/products';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.use('/products', productsRouter);
-
+// Statická úvodní stránka z /views
 app.get('/', (req, res) => {
-    res.send('Vítej v e-shopu s nářadím! 🚀');
-  });  
+  res.sendFile(path.join(__dirname, '../views/index.html'));
+});
+
+// Produkty
+app.use('/products', productsRouter);
 
 export default app;
