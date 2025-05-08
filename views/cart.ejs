@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>Košík</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Váš košík</h1>
+    </header>
+
+    <% if (cart.length === 0) { %>
+      <p>Košík je prázdný.</p>
+    <% } else { %>
+      <ul>
+        <% cart.forEach(item => { %>
+          <li>
+            <strong><%= item.name %></strong> – <%= item.quantity %> ks – <%= item.price * item.quantity %> Kč
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+
+    <a href="/products">Zpět na produkty</a>
+  </div>
+</body>
+</html>

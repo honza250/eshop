@@ -26,6 +26,25 @@ app.post('/cart', (req, res) => {
   res.redirect('/products');
 });
 
+app.get('/cart', async (req, res) => {
+  const cartWithDetails = await Promise.all(
+    cart.map(async (item) => {
+      const product = await db.query.products.findFirst({
+        where: (p, { eq }) => eq(p.id, item.productId),
+      });
+
+      return {
+        ...item,
+        name: product?.name,
+        price: product?.price,
+      };
+    })
+  );
+
+  res.render('cart', { cart: cartWithDetails });
+});
+
+
 // Nastavíme EJS jako šablonovací engine
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
