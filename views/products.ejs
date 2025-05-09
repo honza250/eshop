@@ -1,36 +1,16 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-  <meta charset="UTF-8" />
-  <title>Produkty</title>
-  <link rel="stylesheet" href="/styles.css" />
-  <a href="/cart">Zobrazit košík (<%= cartCount %>)</a>
-
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Naše produkty</h1>
-    </header>
-    <% products.forEach(p => { %>
-      <div class="product">
-        <div class="details">
-          <h2><%= p.name %></h2>
-          <p><%= p.description %></p>
-          <strong><%= p.price %> Kč</strong>
-          <form action="/cart" method="POST">
-            <input type="hidden" name="productId" value="<%= p.id %>">
-            <button type="submit">Přidat do košíku</button>
-          </form>
-        </div>
-        <div class="image">
-          <img src="<%= p.imageUrl %>" alt="<%= p.name %>">
-        </div>
-      </div>
-      
-    <% }); %>
-    
-    <a href="/">Zpět na úvod</a>
-  </div>
-</body>
-</html>
+<h1>Produkty</h1>
+<ul>
+  <% products.forEach(function(product) { %>
+    <li style="margin-bottom: 1em;">
+      <% if (product.imageUrl) { %>
+        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" style="max-width:100px;vertical-align:middle;">
+      <% } %>
+      <strong><%= product.name %></strong> - <%= product.price %> Kč
+      <form action="/cart" method="POST" style="display:inline;">
+        <input type="hidden" name="productId" value="<%= product.id %>">
+        <button type="submit">Přidat do košíku</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+<p><a href="/">Zpět na hlavní stránku</a></p>

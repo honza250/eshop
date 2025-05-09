@@ -5,6 +5,6 @@ export default {
   out: "./drizzle",
   dialect: "sqlite",
   dbCredentials: {
-    url: "./sqlite.db",
+    url: "./src/db/sqlite.db",
   },
 } satisfies Config;

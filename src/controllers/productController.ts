@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 
 export async function getAllProducts(req: Request, res: Response) {
   const result = await db.select().from(products);
-  res.json(result);
+  res.render('products', { products: result, title: 'Produkty' });
 }
 
 export async function getProductById(req: Request, res: Response) {

@@ -1,104 +1,35 @@
+
 import express from 'express';
 import path from 'path';
-import { db } from './db';
-import { products } from './db/schema';
+import expressLayouts from 'express-ejs-layouts';
+import productRoutes from './routes/products';
+// Pokud máte cartRoutes, importujte je také:
+import cartRoutes from './routes/cart';
 
 const app = express();
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
 
-// Dočasné úložiště v paměti
-const cart: { productId: number; quantity: number }[] = [];
-
-app.use(express.urlencoded({ extended: true }));
-
-app.post('/cart', (req, res) => {
-  const { productId } = req.body;
-
-  const existing = cart.find(item => item.productId === Number(productId));
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({ productId: Number(productId), quantity: 1 });
-  }
-
-  // Přesměruj zpět na /products
-  res.redirect('/products');
-});
-
-app.get('/cart', async (req, res) => {
-  const cartWithDetails = await Promise.all(
-    cart.map(async (item) => {
-      const product = await db.query.products.findFirst({
-        where: (p, { eq }) => eq(p.id, item.productId),
-      });
-
-      return {
-        ...item,
-        name: product?.name,
-        price: product?.price,
-      };
-    })
-  );
-
-  res.render('cart', { cart: cartWithDetails });
-});
-
-
-// Nastavíme EJS jako šablonovací engine
-app.set('views', path.join(__dirname, '../views'));
+// Nastavení EJS + layouty
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '..', 'views'));
+app.use(expressLayouts);
+app.set('layout', 'layout');
 
-// Úvodní stránka – pořád jako statické HTML
+// Parsování formulářů
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Statické soubory (styly, obrázky)
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Hlavní stránka
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/index.html'));
+  res.render('index', { title: 'Domů' });
 });
 
-// Dynamická stránka s produkty – přes EJS
-app.get('/products', async (req, res) => {
-  const result = await db.select().from(products);
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  res.render('products', { products: result, cartCount });
+// Produkty
+app.use('/products', productRoutes);
 
-});
+// Košík (pokud máte)
+app.use('/cart', cartRoutes);
 
-app.post('/cart/remove', (req, res) => {
-  const productId = Number(req.body.productId);
-  const item = cart.find(p => p.productId === productId);
-
-  if (item) {
-    item.quantity -= 1;
-    if (item.quantity <= 0) {
-      // Pokud počet klesne na 0 nebo méně, odebereme produkt z košíku úplně
-      const index = cart.findIndex(p => p.productId === productId);
-      if (index > -1) {
-        cart.splice(index, 1);
-      }
-    }
-  }
-
-  res.redirect('/cart');
-});
-
-app.post('/cart/increase', (req, res) => {
-  const productId = Number(req.body.productId);
-  const item = cart.find(p => p.productId === productId);
-
-  if (item) {
-    item.quantity += 1;
-  }
-
-  res.redirect('/cart');
-});
-
-app.post('/cart/clear', (_req, res) => {
-  cart.length = 0;
-  res.redirect('/cart');
-});
-
-app.use(express.static(path.join(__dirname, '../public')));
-
-
-
-// Přidání produktu do košíku
 export default app;

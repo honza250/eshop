@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node src/server.ts",
     "build": "tsc",
-    "migrate": "drizzle-kit push",
+    "migrate": "npx drizzle-kit push",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node src/db/seed.ts"
   },
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.1",
+    "@types/express-ejs-layouts": "^2.5.4",
     "@types/node": "^22.15.14",
     "drizzle-kit": "^0.31.1",
     "ts-node": "^10.9.2",
@@ -26,6 +27,7 @@
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1"
   }
 }
