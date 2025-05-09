@@ -60,6 +60,23 @@ app.get('/products', async (req, res) => {
   res.render('products', { products: result });
 });
 
+app.post('/cart/remove', (req, res) => {
+  const productId = Number(req.body.productId);
+  const item = cart.find(p => p.productId === productId);
+
+  if (item) {
+    item.quantity -= 1;
+    if (item.quantity <= 0) {
+      // Pokud počet klesne na 0 nebo méně, odebereme produkt z košíku úplně
+      const index = cart.findIndex(p => p.productId === productId);
+      if (index > -1) {
+        cart.splice(index, 1);
+      }
+    }
+  }
+
+  res.redirect('/cart');
+});
 
 
 // Přidání produktu do košíku
