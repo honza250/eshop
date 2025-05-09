@@ -2,7 +2,7 @@
 
 ## 1. Klonování repozitáře
 bash
-git clone https://github.com/uzivatel/eshop.git
+git clone https://github.com/honza250/eshop.git
 cd eshop
 
 
