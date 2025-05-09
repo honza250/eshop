@@ -24,6 +24,10 @@
                     <input type="hidden" name="productId" value="<%= item.productId %>">
                     <button type="submit" class="remove-btn">Odebrat</button>
                 </form>
+                <form action="/cart/increase" method="POST" style="display: inline;">
+                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                    <button type="submit" class="add-btn">Přidat</button>
+                </form>
               </div>
             <% }); %>
           </div>

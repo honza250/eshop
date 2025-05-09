@@ -80,12 +80,24 @@ app.post('/cart/remove', (req, res) => {
   res.redirect('/cart');
 });
 
+app.post('/cart/increase', (req, res) => {
+  const productId = Number(req.body.productId);
+  const item = cart.find(p => p.productId === productId);
+
+  if (item) {
+    item.quantity += 1;
+  }
+
+  res.redirect('/cart');
+});
+
 app.post('/cart/clear', (_req, res) => {
   cart.length = 0;
   res.redirect('/cart');
 });
 
 app.use(express.static(path.join(__dirname, '../public')));
+
 
 
 // Přidání produktu do košíku
