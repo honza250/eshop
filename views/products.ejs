@@ -14,6 +14,7 @@
     </header>
     <% products.forEach(p => { %>
       <div class="product">
+        <img src="<%= p.imageUrl %>" alt="<%= p.name %>" style="max-width: 200px;" />
         <h2><%= p.name %></h2>
         <p><%= p.description || '' %></p>
         <strong><%= p.price %> Kč</strong>

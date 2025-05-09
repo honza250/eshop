@@ -14,16 +14,19 @@ async function seedProducts() {
       name: 'Aku vrtačka',
       description: 'Výkonná akumulátorová vrtačka s LED osvětlením.',
       price: 2499,
+      imageUrl: "images/aku-vrtacka.jpg",
     },
     {
       name: 'Kombinované kladivo',
       description: 'Ideální pro vrtání do betonu a zdiva.',
       price: 3999,
+      imageUrl: "images/kombinovane-kladivo.jpg",
     },
     {
       name: 'Sada šroubováků',
       description: '12dílná sada precizních šroubováků.',
       price: 499,
+      imageUrl: "images/sada-sroubovaku.jpg",
     },
   ]);
   console.log('Seed: Produkty byly úspěšně přidány.');

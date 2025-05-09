@@ -85,6 +85,7 @@ app.post('/cart/clear', (_req, res) => {
   res.redirect('/cart');
 });
 
+app.use(express.static(path.join(__dirname, '../public')));
 
 
 // Přidání produktu do košíku
