@@ -14,17 +14,20 @@
     <% if (cart.length === 0) { %>
       <p>Košík je prázdný.</p>
     <% } else { %>
-        <ul>
+        <div class="cart-list">
             <% cart.forEach(item => { %>
-              <li>
-                <strong><%= item.name %></strong> – <%= item.quantity %> ks – <%= item.price * item.quantity %> Kč
+              <div class="cart-item">
+                <div class="item-name"><%= item.name %></div>
+                <div class="item-quantity">x <%= item.quantity %></div>
+                <div class="item-price"><%= item.price * item.quantity %> Kč</div>
                 <form action="/cart/remove" method="POST" style="display: inline;">
-                  <input type="hidden" name="productId" value="<%= item.productId %>">
-                  <button type="submit">Odebrat</button>
+                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                    <button type="submit" class="remove-btn">Odebrat</button>
                 </form>
-              </li>
+              </div>
             <% }); %>
-          </ul>          
+          </div>
+               
     <% } %>
     <form action="/cart/clear" method="POST">
         <button type="submit" style="margin-top: 1rem;">Vyprázdnit košík</button>
