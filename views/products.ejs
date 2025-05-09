@@ -14,15 +14,20 @@
     </header>
     <% products.forEach(p => { %>
       <div class="product">
-        <img src="<%= p.imageUrl %>" alt="<%= p.name %>" style="max-width: 200px;" />
-        <h2><%= p.name %></h2>
-        <p><%= p.description || '' %></p>
-        <strong><%= p.price %> Kč</strong>
-        <form action="/cart" method="POST" style="margin-top: 1rem;">
-          <input type="hidden" name="productId" value="<%= p.id %>" />
-          <button type="submit">Přidat do košíku</button>
-        </form>
+        <div class="details">
+          <h2><%= p.name %></h2>
+          <p><%= p.description %></p>
+          <strong><%= p.price %> Kč</strong>
+          <form action="/cart" method="POST">
+            <input type="hidden" name="productId" value="<%= p.id %>">
+            <button type="submit">Přidat do košíku</button>
+          </form>
+        </div>
+        <div class="image">
+          <img src="<%= p.imageUrl %>" alt="<%= p.name %>">
+        </div>
       </div>
+      
     <% }); %>
     
     <a href="/">Zpět na úvod</a>
