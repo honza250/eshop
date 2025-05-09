@@ -2,21 +2,28 @@
 <% if (cart && cart.length === 0) { %>
   <p>Košík je prázdný.</p>
 <% } else if (cart) { %>
-  <ul>
+  <div class="cart-list">
     <% cart.forEach(function(item) { %>
-      <li>
-        <%= item.name %> - <%= item.price %> Kč x <%= item.quantity %>
+      <div class="cart-item">
+        <div class="item-name"><%= item.name %></div>
+        <div class="item-quantity"><%= item.quantity %>×</div>
+        <div class="item-price"><%= item.price %> Kč</div>
         <form action="/cart/increase" method="POST" style="display:inline;">
           <input type="hidden" name="productId" value="<%= item.id %>">
-          <button type="submit">+</button>
+          <button class="add-btn" type="submit">+</button>
+        </form>
+        <form action="/cart/decrease" method="POST" style="display:inline;">
+          <input type="hidden" name="productId" value="<%= item.id %>">
+          <button class="remove-btn" type="submit">-</button>
         </form>
         <form action="/cart/remove" method="POST" style="display:inline;">
           <input type="hidden" name="productId" value="<%= item.id %>">
-          <button type="submit">Odebrat</button>
+          <button class="remove-btn" type="submit">Odebrat všechno</button>
         </form>
-      </li>
+      </div>
     <% }) %>
-  </ul>
+  </div>
   <p><strong>Celkem:</strong> <%= total %> Kč</p>
 <% } %>
 <p><a href="/products">Pokračovat v nákupu</a></p>
+<p><a href="/">Zpět na hlavní stránku</a></p>

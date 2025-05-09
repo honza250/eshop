@@ -67,6 +67,24 @@ export const increaseQuantity = async (req: Request, res: Response) => {
   res.redirect('/cart');
 };
 
+// Snížit množství
+export const decreaseQuantity = async (req: Request, res: Response) => {
+  const productId = parseInt(req.body.productId, 10);
+  const existingArr = await db.select().from(cartItems).where(eq(cartItems.productId, productId));
+  const existing = existingArr[0];
+  if (existing) {
+    if (existing.quantity > 1) {
+      await db.update(cartItems)
+        .set({ quantity: existing.quantity - 1 })
+        .where(eq(cartItems.productId, productId));
+    } else {
+      // Pokud je množství 1, položku odstraníme
+      await db.delete(cartItems).where(eq(cartItems.productId, productId));
+    }
+  }
+  res.redirect('/cart');
+};  
+
 // Odebrat z košíku
 export const removeFromCart = async (req: Request, res: Response) => {
   const productId = parseInt(req.body.productId, 10);
