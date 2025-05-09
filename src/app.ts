@@ -57,7 +57,9 @@ app.get('/', (req, res) => {
 // Dynamická stránka s produkty – přes EJS
 app.get('/products', async (req, res) => {
   const result = await db.select().from(products);
-  res.render('products', { products: result });
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  res.render('products', { products: result, cartCount });
+
 });
 
 app.post('/cart/remove', (req, res) => {
@@ -77,6 +79,12 @@ app.post('/cart/remove', (req, res) => {
 
   res.redirect('/cart');
 });
+
+app.post('/cart/clear', (_req, res) => {
+  cart.length = 0;
+  res.redirect('/cart');
+});
+
 
 
 // Přidání produktu do košíku

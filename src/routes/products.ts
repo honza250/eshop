@@ -5,4 +5,5 @@ const router = Router();
 
 router.get('/', getAllProducts);
 
+
 export default router;
