@@ -69,3 +69,45 @@ button {
 button:hover {
     background-color: #2d6a4f;
 }
+
+section {
+  background-color: #d8f3dc;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  color: #2d6a4f;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+p {
+  line-height: 1.6;
+  margin: 0.5rem 0;
+  color: #1b4332;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+ul li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  color: #2d6a4f;
+  font-weight: 500;
+}
+
+ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #40916c;
+}
+
