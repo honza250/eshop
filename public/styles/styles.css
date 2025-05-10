@@ -65,6 +65,15 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+button.disabled {
+    background-color: #b7e4c7;
+    cursor: not-allowed;
+}
+
+.remove-btn {
+    background-color: #ff6b6b;
+    margin-left: auto;
+}
 
 button:hover {
     background-color: #2d6a4f;
