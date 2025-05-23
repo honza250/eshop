@@ -3,8 +3,8 @@ import express from 'express';
 import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 import productRoutes from './routes/products';
-// Pokud máte cartRoutes, importujte je také:
 import cartRoutes from './routes/cart';
+import orderRoutes from './routes/order';
 
 const app = express();
 
@@ -31,5 +31,7 @@ app.use('/products', productRoutes);
 
 // Košík (pokud máte)
 app.use('/cart', cartRoutes);
+
+app.use('/order', orderRoutes);
 
 export default app;
