@@ -8,6 +8,8 @@
         <div class="item-name"><%= item.name %></div>
         <div class="item-quantity"><%= item.quantity %>×</div>
         <div class="item-price"><%= item.price %> Kč</div>
+        <div id="stock-<%= item.id %>">Skladem: <%= item.stock %> ks</div>
+
         <form action="/cart/increase" method="POST" style="display:inline;">
           <input type="hidden" name="productId" value="<%= item.id %>">
           <button class="add-btn" type="submit">+</button>
@@ -28,3 +30,19 @@
 <p><a href="/order">Pokračovat k objednávce</a></p>
 <p><a href="/products">Pokračovat v nákupu</a></p>
 <p><a href="/">Zpět na hlavní stránku</a></p>
+
+<script>
+  const ws = new WebSocket('ws://localhost:3001'); // Ujisti se, že port odpovídá websocket serveru
+
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'stock_update') {
+      data.products.forEach(prod => {
+        const stockEl = document.querySelector(`#stock-${prod.id}`);
+        if (stockEl) {
+          stockEl.textContent = `Skladem: ${prod.stock} ks`;
+        }
+      });
+    }
+  };
+</script>

@@ -3,6 +3,8 @@ import { db } from '../db';
 import { products, cartItems } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { wss } from '../server';
+import { broadcastStockUpdate } from '../ws-server';
+
 
 // Zobrazit košík
 export const showCart = async (req: Request, res: Response) => {
@@ -20,6 +22,7 @@ export const showCart = async (req: Request, res: Response) => {
         name: product.name,
         price: product.price,
         quantity: item.quantity,
+        stock: product.stock,
       });
       total += product.price * item.quantity;
     }
@@ -53,6 +56,7 @@ export const addToCart = async (req: Request, res: Response) => {
     await db.update(cartItems)
       .set({ quantity: existing.quantity + 1 })
       .where(eq(cartItems.productId, productId));
+      await broadcastStockUpdate();
   } else {
     // Přidat novou položku
     await db.insert(cartItems).values({
@@ -65,6 +69,8 @@ export const addToCart = async (req: Request, res: Response) => {
   await db.update(products)
     .set({ stock: product.stock - 1 })
     .where(eq(products.id, productId));
+    await broadcastStockUpdate();
+
 
   //  Získat aktualizovaný produkt
   const updatedProduct = await db.select().from(products).where(eq(products.id, productId));
@@ -110,6 +116,8 @@ export const increaseQuantity = async (req: Request, res: Response) => {
     await db.update(cartItems)
       .set({ quantity: existing.quantity + 1 })
       .where(eq(cartItems.productId, productId));
+      await broadcastStockUpdate();
+
   } else {
     // Přidat nový záznam
     await db.insert(cartItems).values({
@@ -122,6 +130,8 @@ export const increaseQuantity = async (req: Request, res: Response) => {
   await db.update(products)
     .set({ stock: product.stock - 1 })
     .where(eq(products.id, productId));
+    await broadcastStockUpdate();
+
 
   res.redirect('/cart');
 };
@@ -140,6 +150,7 @@ export const decreaseQuantity = async (req: Request, res: Response) => {
       await db.update(cartItems)
         .set({ quantity: existing.quantity - 1 })
         .where(eq(cartItems.productId, productId));
+        await broadcastStockUpdate();
     } else {
       // Odstranit z košíku
       await db.delete(cartItems).where(eq(cartItems.productId, productId));
@@ -152,7 +163,8 @@ export const decreaseQuantity = async (req: Request, res: Response) => {
       await db.update(products)
         .set({ stock: product.stock + 1 })
         .where(eq(products.id, productId));
-    }
+        await broadcastStockUpdate();
+    } 
   }
 
   res.redirect('/cart');
@@ -176,6 +188,8 @@ export const removeFromCart = async (req: Request, res: Response) => {
       await db.update(products)
         .set({ stock: product.stock + existing.quantity })
         .where(eq(products.id, productId));
+        await broadcastStockUpdate();
+
     }
 
     // Odstranit položku z košíku

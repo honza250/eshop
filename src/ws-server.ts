@@ -42,3 +42,8 @@ wss.on('connection', ws => {
     }
   });
 });
+export async function broadcastStockUpdate() {
+  const allProducts = await db.select().from(products);
+  broadcast({ type: 'stock_update', products: allProducts });
+}
+export { wss }; // Export WebSocket server pro použití jinde

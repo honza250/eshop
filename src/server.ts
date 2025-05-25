@@ -21,7 +21,7 @@ wss.on('connection', async (ws) => {
       const { productId } = data;
 
       const prod = await db.select().from(products).where(eq(products.id, productId));
-      if (prod.length > 0 && prod[0].stock > 0) {
+      if (prod.length > 0 && prod[0] !== null && prod[0].stock > 0) {
         const newStock = prod[0].stock - 1;
 
         await db.update(products)

@@ -17,7 +17,7 @@
 <p><a href="/">Zpět na hlavní stránku</a></p>
 
 <script>
-  const ws = new WebSocket('ws://localhost:3000');
+  const ws = new WebSocket('ws://localhost:3001');
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
