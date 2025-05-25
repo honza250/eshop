@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { db } from '../db';
 import { products, cartItems } from '../db/schema';
 import { eq } from 'drizzle-orm';
+import { wss } from '../server';
 
 // Zobrazit košík
 export const showCart = async (req: Request, res: Response) => {
@@ -36,9 +37,17 @@ export const addToCart = async (req: Request, res: Response) => {
     res.status(404).send('Produkt nenalezen');
     return;
   }
+
+  // Zkontroluj skladovou zásobu
+  if (product.stock <= 0) {
+    res.status(400).send('Produkt není skladem');
+    return;
+  }
+
   // Zkontroluj, zda už je v košíku
   const existingArr = await db.select().from(cartItems).where(eq(cartItems.productId, productId));
   const existing = existingArr[0];
+
   if (existing) {
     // Zvyšit množství
     await db.update(cartItems)
@@ -51,6 +60,25 @@ export const addToCart = async (req: Request, res: Response) => {
       quantity: 1,
     });
   }
+
+  // ✅ Snížit sklad o 1 ks
+  await db.update(products)
+    .set({ stock: product.stock - 1 })
+    .where(eq(products.id, productId));
+
+  // ✅ Získat aktualizovaný produkt
+  const updatedProduct = await db.select().from(products).where(eq(products.id, productId));
+
+  // ✅ Poslat websocket zprávu všem klientům
+  wss.clients.forEach((client) => {
+    if (client.readyState === 1) {
+      client.send(JSON.stringify({
+        type: 'stock_update',
+        products: updatedProduct,
+      }));
+    }
+  });
+
   res.redirect('/cart');
 };
 

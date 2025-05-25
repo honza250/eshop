@@ -10,7 +10,24 @@
         <input type="hidden" name="productId" value="<%= product.id %>">
         <button type="submit">Přidat do košíku</button>
       </form>
+      <span id="stock-<%= product.id %>">Skladem: <%= product.stock %> ks</span>
     </li>
   <% }) %>
 </ul>
 <p><a href="/">Zpět na hlavní stránku</a></p>
+
+<script>
+  const ws = new WebSocket('ws://localhost:3000');
+
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'stock_update') {
+      data.products.forEach(prod => {
+        const stockEl = document.querySelector(`#stock-${prod.id}`);
+        if (stockEl) {
+          stockEl.textContent = `Skladem: ${prod.stock} ks`;
+        }
+      });
+    }
+  };
+</script>

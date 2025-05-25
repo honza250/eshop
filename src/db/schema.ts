@@ -5,6 +5,7 @@ export const products = sqliteTable('products', {
   name: text('name').notNull(),
   description: text('description'),
   price: integer('price').notNull(),
+  stock: integer('stock').notNull().default(10),
   imageUrl: text('image_url'),
 });
 
